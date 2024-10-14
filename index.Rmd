@@ -12,3 +12,14 @@ output:
 ## Project thoughts
 
 I am interested in exploring data related to comparing data in Wisconsin with other bordering states/the rest of the U.S. Maybe something about education or politics, etc.
+
+## Research Question and Outline
+Research Question: How does voter turnout affect the electoral success of Democratic candidates in Wisconsin state elections?
+
+Hypothesis: Higher voter turnout is associated with a greater likelihood of Democratic candidates winning elections because traditionally underrepresented groups that lean Democratic, like younger voters, minorities, lower-income people, etc., are more likely to vote in higher-turnout elections. When turnout is low, the electorate tends to skew towards wealthier, older, and more conservative voters, which can favor Republican candidates.
+
+Independent Variable: Voter turnout measured as the percentage of eligable voters who cast ballots.
+Dependent Variable: Success of Democratic candidates measured as the percentage of the vote received by Democratic candidates/whether they win or lose.
+
+Data That Would Support Hypothesis: Higher turnouts would be associated with better performance for Democratic candidates.
+Data That Would Disprove Hypothesis: No clear relationship or higher turnout correlating with better performance for Republican candidates.
