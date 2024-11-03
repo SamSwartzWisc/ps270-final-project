@@ -23,3 +23,31 @@ Dependent Variable: Success of Democratic candidates measured as the percentage 
 
 Data That Would Support Hypothesis: Higher turnouts would be associated with better performance for Democratic candidates.
 Data That Would Disprove Hypothesis: No clear relationship or higher turnout correlating with better performance for Republican candidates.
+
+
+```{r}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+
+data <- read_csv('VoteData.csv')
+
+data <- data |>
+  dplyr::select(Year, `General Election Turnout`, Win) |>
+  mutate(`General Election Turnout` = as.numeric(gsub("%", "", `General Election Turnout`)))
+
+ggplot(data, aes(x = Year, y = `General Election Turnout`, fill = Win)) +
+  geom_bar(stat = "identity") +
+  labs(
+    title = "General Election Turnout in Wisconsin in Presidential Election Years",
+    subtitle  = "The percent of voter turnout in Wisconsin compared to the party candidate that won the state",
+    x = "Year",
+    y = "Turnout (%)",
+    caption = "Source: Wisconsin Elections Commision"
+  ) +
+  scale_fill_manual(values = c("D" = "blue", "R" = "red")) +
+  theme_minimal()
+
+```
+
+
