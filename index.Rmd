@@ -47,7 +47,40 @@ ggplot(data, aes(x = Year, y = `General Election Turnout`, fill = Win)) +
   ) +
   scale_fill_manual(values = c("D" = "blue", "R" = "red")) +
   theme_minimal()
-
 ```
+```{r}
+library(tidyverse)
+library(broom)
+library(knitr)
+
+data <- read_csv('VoteData.csv')
+vote_share_data <- read_csv('WiscVotingData.csv')
+
+data <- data |>
+  mutate(
+    `General Election Turnout` = as.numeric(gsub("%", "", `General Election Turnout`))
+  ) |>
+  select(Year, `General Election Turnout`)
+
+vote_share_data <- vote_share_data |>
+  mutate(
+    `Dem Perc` = as.numeric(gsub("%", "", `Dem Perc`))
+  ) |>
+  select(Year, `Dem Perc`)
+
+combined_data <- data |>
+  inner_join(vote_share_data, by = "Year")
+
+model <- lm(`Dem Perc` ~ `General Election Turnout`, data = combined_data)
+
+regression_table <- tidy(model) |>
+  select(term, estimate, std.error, statistic, p.value) |>
+  knitr::kable(
+    col.names = c("Term", "Estimate", "Std. Error", "t value", "P value"),
+    caption = "Regression Analysis of Voter Turnout on Democratic Vote Share"  )
+
+regression_table
+```
+
 
 
