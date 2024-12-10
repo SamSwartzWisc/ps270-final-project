@@ -41,8 +41,7 @@ graph1 <- ggplot(data, aes(x = Year, y = `General Election Turnout`, fill = Win)
   geom_bar(stat = "identity") +
   labs(
     title = "General Election Turnout in Wisconsin in Presidential Election Years",
-    subtitle  = "The percent of voter turnout in Wisconsin compared to the party candidate 
-that won the state",
+    subtitle  = "% of voter turnout in WI compared to the party candidate that won the state",
     x = "Year",
     y = "Turnout (%)",
     caption = "Source: Wisconsin Elections Commision"
@@ -90,9 +89,10 @@ graph2 <- ggplot(combined_data, aes(x = `General Election Turnout`, y = `Dem Per
   geom_point(color = "blue") +
   geom_smooth(method = "lm", color = "red", se = TRUE) +
   labs(
-    title = "Scatter Plot with Regression Line",
+    title = "Percent of Democratic vote share compared to General Election turnout",
     x = "General Election Turnout (%)",
     y = "Democratic Vote Share (%)")
+    
 print(regression_table)
 print (graph2)
 ```
