@@ -7,22 +7,23 @@ output:
     self_contained: false
 ---
 
+## Introduction
+With the 2024 Presidential Election still fresh on the minds of many, and with it, the statistics behind elections, I wanted to look into what role, if at all, turnout plays in the success of a Presidential candidate in Wisconsin. I chose to examine the success of Democratic candidates, though the same process could be done conversely for Republican candidates or third party candidates as well.
 
+Research Question: How does voter turnout affect the electoral success of Democratic Presidential candidates in Elections in Wisconsin?
 
-## Project thoughts
+Hypothesis: Higher voter turnout is associated with greater success of Democratic Presidential candidates winning elections. This is because traditionally underrepresented groups that lean Democratic, like younger voters, minorities, lower-income people, etc., are more likely to vote in higher-turnout elections. When turnout is low, the electorate tends to skew towards wealthier, older, and more conservative voters, which can favor Republican candidates.
 
-I am interested in exploring data related to comparing data in Wisconsin with other bordering states/the rest of the U.S. Maybe something about education or politics, etc.
+Data That Would Support Hypothesis: Higher turnouts would be associated with better performance for Democratic Presidential candidates.
 
-## Research Question and Outline
-Research Question: How does voter turnout affect the electoral success of Democratic candidates in Wisconsin state elections?
+Data That Would Disprove Hypothesis: No clear relationship or higher turnout correlating with better performance for Republican Presidential candidates.
 
-Hypothesis: Higher voter turnout is associated with a greater likelihood of Democratic candidates winning elections because traditionally underrepresented groups that lean Democratic, like younger voters, minorities, lower-income people, etc., are more likely to vote in higher-turnout elections. When turnout is low, the electorate tends to skew towards wealthier, older, and more conservative voters, which can favor Republican candidates.
+## Data
+The following data is taken from the Wisconsin Elections Commission's voter turnout statistics from 1984 - 2022 (https://elections.wi.gov/statistics-data/voter-turnout).
 
-Independent Variable: Voter turnout measured as the percentage of eligable voters who cast ballots.
-Dependent Variable: Success of Democratic candidates measured as the percentage of the vote received by Democratic candidates/whether they win or lose.
+Independent Variable: Voter turnout measured as the percentage of eligible voters who cast ballots. This would be classified as a survey.
 
-Data That Would Support Hypothesis: Higher turnouts would be associated with better performance for Democratic candidates.
-Data That Would Disprove Hypothesis: No clear relationship or higher turnout correlating with better performance for Republican candidates.
+Dependent Variable: Success of Democratic Presidential candidates measured as the percentage of the vote received by Democratic candidates/whether they win or lose.
 
 
 ```{r}
@@ -36,18 +37,24 @@ data <- data |>
   dplyr::select(Year, `General Election Turnout`, Win) |>
   mutate(`General Election Turnout` = as.numeric(gsub("%", "", `General Election Turnout`)))
 
-ggplot(data, aes(x = Year, y = `General Election Turnout`, fill = Win)) +
+graph1 <- ggplot(data, aes(x = Year, y = `General Election Turnout`, fill = Win)) +
   geom_bar(stat = "identity") +
   labs(
     title = "General Election Turnout in Wisconsin in Presidential Election Years",
-    subtitle  = "The percent of voter turnout in Wisconsin compared to the party candidate that won the state",
+    subtitle  = "The percent of voter turnout in Wisconsin compared to the party candidate 
+that won the state",
     x = "Year",
     y = "Turnout (%)",
     caption = "Source: Wisconsin Elections Commision"
   ) +
   scale_fill_manual(values = c("D" = "blue", "R" = "red")) +
   theme_minimal()
+
+print (graph1)
 ```
+## Results
+The following results use a slightly different data source from Dave Leip's Atlas of U.S. Presidential Elections examining the percentage of Democratic vote share for either major party candidate in the state and the winner of Wisconsin's electoral votes. (https://uselectionatlas.org/RESULTS/compare.php?year=2008&fips=55&f=1&off=0&elect=0&type=state). 
+
 ```{r}
 library(tidyverse)
 library(broom)
@@ -79,8 +86,24 @@ regression_table <- tidy(model) |>
     col.names = c("Term", "Estimate", "Std. Error", "t value", "P value"),
     caption = "Regression Analysis of Voter Turnout on Democratic Vote Share"  )
 
-regression_table
+graph2 <- ggplot(combined_data, aes(x = `General Election Turnout`, y = `Dem Perc`)) +
+  geom_point(color = "blue") +
+  geom_smooth(method = "lm", color = "red", se = TRUE) +
+  labs(
+    title = "Scatter Plot with Regression Line",
+    x = "General Election Turnout (%)",
+    y = "Democratic Vote Share (%)")
+print(regression_table)
+print (graph2)
 ```
 
+The scatter plot and regression analysis do not show any significant relationship between voter turnout and the Democratic vote share in Wisconsin Presidential elections.
 
+The scatterplot shows the relationship between the General Election Turnout on the x-axis and Democratic Vote Share on the y-axis. The red regression line, being flat, shows a highly minimal or no relationship between voter turnout and Democratic vote share and in turn Democratic Presidential candidate success.
 
+The regression coefficient for turnout is about -0.0091, indicating a slight negative association, though negligible. This means that with every 1% increase in voter turnout, the Democratic vote share actually decreased by about 0.0091 percentage points.
+
+Paired with a high P-value of about 0.976, which is much larger than a typical threshold of 0.05, the turnout is statistically insignificant. This means that the hypothesis that a higher turnout improves turnout for Democratic Presidential candidates' success cannot be supported.
+
+## Conclusion
+Overall, the data does not support the hypothesis that a higher voter turnout improves the success of Democratic Presidential candidates, however limitations most likely played a factor as well. Confounding factors like demographic shifts or campaign strategies in the state can play a role. Additionally, the sample size can certainly be improved upon. With more time or resources, improvements could be made by incorporating demographic data, taking a look a county-level patterns, and expanding the data set to include more states and more election years.
